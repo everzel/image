@@ -61,7 +61,7 @@ export default class Uploader {
         url: this.config.endpoints.byFile,
         data: this.config.additionalRequestData,
         accept: this.config.types,
-        headers: this.config.additionalRequestHeaders,
+        headers: Object.assign({}, this.config.additionalRequestHeaders),
         beforeSend: (files) => {
           preparePreview(files[0]);
         },
@@ -104,7 +104,7 @@ export default class Uploader {
           url: url,
         }, this.config.additionalRequestData),
         type: ajax.contentType.JSON,
-        headers: this.config.additionalRequestHeaders,
+        headers: Object.assign({}, this.config.additionalRequestHeaders)
       }).then(response => response.body);
     }
 
@@ -164,7 +164,7 @@ export default class Uploader {
         url: this.config.endpoints.byFile,
         data: formData,
         type: ajax.contentType.JSON,
-        headers: this.config.additionalRequestHeaders,
+        headers: Object.assign({}, this.config.additionalRequestHeaders)
       }).then(response => response.body);
     }
 
