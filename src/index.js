@@ -54,6 +54,7 @@ import Uploader from './uploader';
  * @property {object} endpoints - upload endpoints
  * @property {string} endpoints.byFile - upload by file
  * @property {string} endpoints.byUrl - upload by URL
+ * @property {string} endpoints.byGoogleDrive - upload by URL
  * @property {string} field - field name for uploaded image
  * @property {string} types - available mime-types
  * @property {string} captionPlaceholder - placeholder for Caption field
@@ -286,7 +287,12 @@ export default class ImageTool {
       case 'pattern': {
         const url = event.detail.data;
 
-        this.uploadUrl(url);
+        if (url.indexOf('drive.google.com') !== -1) {
+          this.uploadUrl(url, this.config.endpoints.byGoogleDrive);
+        } else {
+          this.uploadUrl(url);
+        }
+
         break;
       }
       case 'file': {
@@ -437,13 +443,11 @@ export default class ImageTool {
   }
 
   /**
-   * Show preloader and upload image by target url
-   *
-   * @param {string} url - url pasted
-   * @returns {void}
+   * @param url
+   * @param uploadUrl
    */
-  uploadUrl(url) {
+  uploadUrl(url, uploadUrl = null) {
     this.ui.showPreloader(url);
-    this.uploader.uploadByUrl(url);
+    this.uploader.uploadByUrl(url, uploadUrl);
   }
 }

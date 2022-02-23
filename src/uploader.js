@@ -77,12 +77,10 @@ export default class Uploader {
   }
 
   /**
-   * Handle clicks on the upload file button
-   * Fires ajax.post()
-   *
-   * @param {string} url - image source url
+   * @param url
+   * @param uploadUrl
    */
-  uploadByUrl(url) {
+  uploadByUrl(url, uploadUrl = null) {
     let upload;
 
     /**
@@ -98,14 +96,26 @@ export default class Uploader {
       /**
        * Default uploading
        */
-      upload = ajax.post({
-        url: this.config.endpoints.byUrl,
-        data: Object.assign({
-          url: url,
-        }, this.config.additionalRequestData),
-        type: ajax.contentType.JSON,
-        headers: Object.assign({}, this.config.additionalRequestHeaders)
-      }).then(response => response.body);
+
+      if (uploadUrl) {
+        upload = ajax.post({
+          url: uploadUrl,
+          data: Object.assign({
+            url: url,
+          }, this.config.additionalRequestData),
+          type: ajax.contentType.JSON,
+          headers: Object.assign({}, this.config.additionalRequestHeaders)
+        }).then(response => response.body);
+      } else {
+        upload = ajax.post({
+          url: this.config.endpoints.byUrl,
+          data: Object.assign({
+            url: url,
+          }, this.config.additionalRequestData),
+          type: ajax.contentType.JSON,
+          headers: Object.assign({}, this.config.additionalRequestHeaders)
+        }).then(response => response.body);
+      }
     }
 
     upload.then((response) => {
