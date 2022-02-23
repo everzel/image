@@ -122,6 +122,7 @@ export default class ImageTool {
       buttonContent: config.buttonContent || '',
       uploader: config.uploader || undefined,
       actions: config.actions || [],
+      uploadInoutTitle: config.uploadInoutTitle || 'Or upload from Google Drive:',
     };
 
     /**
@@ -173,8 +174,10 @@ export default class ImageTool {
    * @returns {HTMLDivElement}
    */
   render() {
-    this.api.blocks.insert('paragraph', {text: '&nbsp;'});
-    
+    this.api.blocks.insert('paragraph', {
+      text: '&nbsp;',
+    });
+
     return this.ui.render(this.data);
   }
 
@@ -242,7 +245,7 @@ export default class ImageTool {
        * Paste URL of image into the Editor
        */
       patterns: {
-        image: /https?:\/\/\S+\.(gif|jpe?g|tiff|png)$/i,
+        image: /https?:\/\/\S+\.(gif|jpe?g|tiff|png)|((((https?:\/\/drive.google.com)|(www\.))[^\s]+))/g
       },
 
       /**
