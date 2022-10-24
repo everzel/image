@@ -56,6 +56,7 @@ import Uploader from './uploader';
  * @property {string} endpoints.byUrl - upload by URL
  * @property {string} endpoints.byGoogleDrive - upload by URL
  * @property {string} field - field name for uploaded image
+ * @property {boolean} isGoogleDriveEnabled - field name for uploaded image
  * @property {string} types - available mime-types
  * @property {string} captionPlaceholder - placeholder for Caption field
  * @property {object} additionalRequestData - any data to send with requests
@@ -118,6 +119,7 @@ export default class ImageTool {
       additionalRequestData: config.additionalRequestData || {},
       additionalRequestHeaders: config.additionalRequestHeaders || {},
       field: config.field || 'image',
+      isGoogleDriveEnabled: config.isGoogleDriveEnabled || false,
       types: config.types || 'image/*',
       captionPlaceholder: this.api.i18n.t(config.captionPlaceholder || 'Caption'),
       buttonContent: config.buttonContent || '',
@@ -285,12 +287,14 @@ export default class ImageTool {
         break;
       }
       case 'pattern': {
-        const url = event.detail.data;
+        if (this.config.isGoogleDriveEnabled) {
+          const url = event.detail.data;
 
-        if (url.indexOf('drive.google.com') !== -1) {
-          this.uploadUrl(url, this.config.endpoints.byGoogleDrive);
-        } else {
-          this.uploadUrl(url);
+          if (url.indexOf('drive.google.com') !== -1) {
+            this.uploadUrl(url, this.config.endpoints.byGoogleDrive);
+          } else {
+            this.uploadUrl(url);
+          }
         }
 
         break;
