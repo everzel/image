@@ -177,9 +177,10 @@ export default class ImageTool {
    * @returns {HTMLDivElement}
    */
   render() {
-    this.api.blocks.insert('paragraph', {
+    // Remove from ticket #266
+    /*this.api.blocks.insert('paragraph', {
       text: '&nbsp;',
-    });
+    });*/
 
     return this.ui.render(this.data);
   }
